@@ -5,9 +5,9 @@
 
 
 # S3 bucket access policy for AP landing bucket (data pushed from 
-# Performance Hub to a bucket in the AP account - hence hard-coded name)
+# Performance Hub to a bucket in the AP account - hence hard-coded bucket name)
 # Legacy account was arn:aws:iam::677012035582:policy/read-ap-ppas
-resource "aws_iam_policy" "s3_ap_Landing_policy" {
+resource "aws_iam_policy" "s3_ap_landing_policy" {
   name   = "${local.application_name}-s3-ap-landing-policy"
   policy = <<EOF
 {
@@ -37,10 +37,25 @@ resource "aws_iam_policy" "s3_ap_Landing_policy" {
 EOF
 }
 
+# resource "aws_iam_role" "s3_ap_landing_role" {
+#   name               = "${local.application_name}-s3-ap-landing-role"
+#   assume_role_policy = data.aws_iam_policy_document.s3-access-policy.json
+#   tags = merge(
+#     local.tags,
+#     {
+#       Name = "${local.application_name}-s3-ap-landing-role"
+#     }
+#   )
+# }
 
-# S3 bucket access policy for PerformanceHub landing bucket (data pushed from 
-# AP to a bucket in this account
-# Legacy account was arn:aws:iam::677012035582:policy/read-ap-ppas
+# resource "aws_iam_role_policy_attachment" "s3_ap_landing_attachment" {
+#   role       = aws_iam_role.s3_ap_landing_role.name
+#   policy_arn = aws_iam_policy.s3_ap_landing_policy.arn
+# }
+
+# S3 bucket access policy for Performance Hub landing bucket (data pushed from 
+# AP to a bucket in this account)
+# Legacy account was arn:aws:iam::677012035582:policy/land-data-access-policy
 resource "aws_iam_policy" "s3_hub_Landing_policy" {
   name   = "${local.application_name}-s3-hub-landing-policy"
   policy = <<EOF
